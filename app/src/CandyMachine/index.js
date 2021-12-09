@@ -93,6 +93,7 @@ const CandyMachine = ({ walletAddress }) => {
       goLiveData,
       goLiveDateTimeString,
     });
+    setIsLoadingMints(true);
     const data = await fetchHashTable(
       process.env.REACT_APP_CANDY_MACHINE_ID,
       true
@@ -111,6 +112,7 @@ const CandyMachine = ({ walletAddress }) => {
         }
       }
     }
+    setIsLoadingMints(false);
     return (
       // Only show this if machineStats is available
       machineStats && (
@@ -121,6 +123,7 @@ const CandyMachine = ({ walletAddress }) => {
               Mint NFT
           </button>
           {/* If we have mints available in our array, let's render some items */}
+          {isLoadingMints && <p>LOADING MINTS...</p>}
           {mints.length > 0 && renderMintedItems()}
         </div>
       )
@@ -378,6 +381,7 @@ const CandyMachine = ({ walletAddress }) => {
         Mint NFT
       </button>
       {/* If we have mints available in our array, let's render some items */}
+      {isLoadingMints && <p>LOADING MINTS...</p>}
       {mints.length > 0 && renderMintedItems()}
 
     </div>
