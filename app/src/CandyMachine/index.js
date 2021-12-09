@@ -373,7 +373,7 @@ const CandyMachine = ({ walletAddress }) => {
     }
 
     // Else let's just return the current drop date
-    return <p>{`Drop Date: ${machineStats.goLiveDateTimeString}`}</p>;
+    return <p>{`Countdown Date is Here!: ${machineStats.goLiveDateTimeString}`}</p>;
   };
 
   return (
@@ -382,9 +382,17 @@ const CandyMachine = ({ walletAddress }) => {
       {renderDropTimer()}
       <p>Drop Date: {machineStats.goLiveDateTimeString}</p>
       <p>Items Minted: {machineStats.itemsRedeemed} / {machineStats.itemsAvailable}</p>
-      <button className="cta-button mint-button" onClick={mintToken} disabled={isMinting}>
-        Mint NFT
-      </button>
+        {machineStats.itemsRedeemed === machineStats.itemsAvailable ? (
+          <p className="sub-text">Sold Out 🙊</p>
+        ) : (
+          <button
+            className="cta-button mint-button"
+            onClick={mintToken}
+            disabled={isMinting}
+          >
+            Mint NFT
+          </button>
+        )}
       {/* If we have mints available in our array, let's render some items */}
       {isLoadingMints && <p>LOADING MINTS...</p>}
       {mints.length > 0 && renderMintedItems()}
