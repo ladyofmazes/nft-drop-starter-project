@@ -33,10 +33,6 @@ const CandyMachine = ({ walletAddress }) => {
   const [isMinting, setIsMinting] = useState(false);
   const [isLoadingMints, setIsLoadingMints] = useState(false);
 
-  useEffect(() => {
-    getCandyMachineState();
-  }, []);	
-
   const getProvider = () => {
     const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
     // Create a new connection object
@@ -115,6 +111,11 @@ const CandyMachine = ({ walletAddress }) => {
     }
     setIsLoadingMints(false);
   };
+
+  useEffect(() => {
+    getCandyMachineState();
+  }, );	
+
 
   const renderMintedItems = () => (
     <div className="gif-container">
