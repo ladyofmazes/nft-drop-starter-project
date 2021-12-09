@@ -28,6 +28,9 @@ const CandyMachine = ({ walletAddress }) => {
   // Add state property inside your component like this
   const [machineStats, setMachineStats] = useState(null);
   const [mints, setMints] = useState([]);
+  // Add these two state properties
+  const [isMinting, setIsMinting] = useState(false);
+  const [isLoadingMints, setIsLoadingMints] = useState(false);
 
   useEffect(() => {
     getCandyMachineState();
@@ -220,6 +223,7 @@ const CandyMachine = ({ walletAddress }) => {
   };
 
   const mintToken = async () => {
+    setIsMinting(true);
     try {
       const mint = web3.Keypair.generate();
       const token = await getTokenWallet(
@@ -305,6 +309,8 @@ const CandyMachine = ({ walletAddress }) => {
             const { result } = notification;
             if (!result.err) {
               console.log('NFT Minted!');
+              setIsMinting(false);
+              await getCandyMachineState();
             }
           }
         },
@@ -312,6 +318,7 @@ const CandyMachine = ({ walletAddress }) => {
       );
     } catch (error) {
       let message = error.msg || 'Minting failed! Please try again!';
+      setIsMinting(false);
 
       if (!error.msg) {
         if (error.message.indexOf('0x138')) {
@@ -367,7 +374,7 @@ const CandyMachine = ({ walletAddress }) => {
     <div className="machine-container">
       <p>Drop Date: {machineStats.goLiveDateTimeString}</p>
       <p>Items Minted: {machineStats.itemsRedeemed} / {machineStats.itemsAvailable}</p>
-      <button className="cta-button mint-button" onClick={mintToken}>
+      <button className="cta-button mint-button" onClick={mintToken} disabled={isMinting}>
         Mint NFT
       </button>
       {/* If we have mints available in our array, let's render some items */}
